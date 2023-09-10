@@ -5,15 +5,22 @@ using UnityEngine;
 public class Playermove : MonoBehaviour
 {
     public GameObject camera;
+    int slashNum;
     Animator anim;
-    float xInput, zInput, pSpeed;
+    float xInput, zInput, pSpeed, slashTime, slashCurrentTime, rollTime, rollCurrentTime;
     Vector3 moveVec, point;
     Rigidbody pRigid;
+    bool isSlashing, isRoll;
     void Start()
     {
         pRigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         pSpeed = 4.0f;
+        slashCurrentTime = 0f;
+        rollCurrentTime = 0f;
+        slashTime = 0f;
+        rollTime = 1.2f;
+        isRoll = false;
     }
 
     void Update()
@@ -26,6 +33,48 @@ public class Playermove : MonoBehaviour
         pRigid.velocity = moveVec.normalized * pSpeed;
         Vector3 dir = new Vector3(mousePos.x - 550, 0f, mousePos.y - 235);
         transform.rotation = Quaternion.LookRotation(dir);
+        slashCurrentTime += Time.deltaTime;
+        rollCurrentTime += Time.deltaTime;
+        if (slashCurrentTime > slashTime)
+        {
+            isSlashing = false;
+        }
+        if (rollCurrentTime > 0.9f)
+        {
+            pSpeed = 4.0f;
+        }
+        if (rollCurrentTime > rollTime)
+        {
+            isRoll = false;
+        }
+        if (Input.GetMouseButton(0) && !isSlashing && !isRoll)
+        {
+            slashCurrentTime = 0;
+            isSlashing = true;
+            slashNum = Random.Range(1, 4);
+            if (slashNum == 1)
+            {
+                slashTime = 1.2f;
+                anim.SetTrigger("slashing1");
+            }
+            else if (slashNum == 2)
+            {
+                slashTime = 1.8f;
+                anim.SetTrigger("slashing2");
+            }
+            else if (slashNum == 3)
+            {
+                slashTime = 1.82f;
+                anim.SetTrigger("slashing3");
+            }
+        }
+        else if (Input.GetKeyDown("left shift") && !isSlashing && !isRoll)
+        {
+            rollCurrentTime = 0;
+            isRoll = true;
+            pSpeed = 10f;
+            anim.SetTrigger("roll");
+        }
         if (Mathf.Abs(xInput) > Mathf.Epsilon || Mathf.Abs(zInput) > Mathf.Epsilon)
         {
             anim.SetInteger("animState", 1);
