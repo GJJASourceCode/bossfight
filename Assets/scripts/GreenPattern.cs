@@ -22,9 +22,9 @@ public class GreenPattern : MonoBehaviour
     
     IEnumerator attack1(){
         anim.SetTrigger("나중에추가");
-        area[0].SetAcitve(true);
+        //area[0].SetAcitve(true);
         yield return new WaitForSeconds(3f);
-        area[0].SetAcitve(false);
+        //area[0].SetAcitve(false);
         yield return new WaitForSeconds(2f);
         choosPattern();
     }
@@ -70,18 +70,14 @@ public class GreenPattern : MonoBehaviour
         if(col.gameObject.name=="Area1"){
             area1 =true;
         }
-    }
-    void OnTriggerExit(Collider col){
-        if(col.gameObject.name=="Area1"){
-            area1 = false;
-        }
-    }
-    void OnTriggerEnter(Collider col){
         if(col.gameObject.name=="Area2"){
             area2 =true;
         }
     }
     void OnTriggerExit(Collider col){
+        if(col.gameObject.name=="Area1"){
+            area1 = false;
+        }
         if(col.gameObject.name=="Area2"){
             area2 = false;
         }
