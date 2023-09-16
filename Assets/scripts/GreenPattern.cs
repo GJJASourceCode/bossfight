@@ -12,16 +12,19 @@ public class GreenPattern : MonoBehaviour
     Vector3 moveVec;
     bool area1, area2;
 
-    void Awake(){
+    void Awake()
+    {
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         rigid = GetComponent<Rigidbody>();
         area1 = false;
         area2 = false;
+        choosPattern();
     }
-    
-    IEnumerator attack1(){
-        anim.SetTrigger("나중에추가");
+
+    IEnumerator attack1()
+    {
+        anim.SetTrigger("Attack1");
         //area[0].SetAcitve(true);
         yield return new WaitForSeconds(3f);
         //area[0].SetAcitve(false);
@@ -29,8 +32,9 @@ public class GreenPattern : MonoBehaviour
         choosPattern();
     }
 
-    IEnumerator attack2(){
-        anim.SetTrigger("나중에추가");
+    IEnumerator attack2()
+    {
+        anim.SetTrigger("Attack2");
         //area[1].SetAcitve(true);
         yield return new WaitForSeconds(3f);
         //area[1].SetAcitve(false);
@@ -38,10 +42,17 @@ public class GreenPattern : MonoBehaviour
         choosPattern();
     }
 
-    void choosPattern(){
-        if(area1){
-            if(area2){
-                Random.Range(0,3);
+    void Go()
+    {
+        choosPattern();
+    }
+    void choosPattern()
+    {
+        /*if (area1)
+        {
+            if (area2)
+            {
+                Random.Range(0, 3);
             }
             else
             {
@@ -51,40 +62,55 @@ public class GreenPattern : MonoBehaviour
         else
         {
             state = 3;
-        } 
-        switch (state){
+        }*/
+        state = Random.Range(0, 2);
+        switch (state)
+        {
             case 0:
-            StartCoroutine("attack1");
-            break;
+                StartCoroutine("attack1");
+                break;
             case 1:
-            break;
-            case 2:
-            break;
+                StartCoroutine("attack2");
+                break;
+            /*case 2:
+                Go();
+                break;
             case 3:
-            break;
+                Go();
+                break;
             case 4:
-            break;
+                break;*/
+            default:
+                break;
         }
     }
-    void OnTriggerEnter(Collider col){
-        if(col.gameObject.name=="Area1"){
-            area1 =true;
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.name == "Area1")
+        {
+            area1 = true;
         }
-        if(col.gameObject.name=="Area2"){
-            area2 =true;
+        if (col.gameObject.name == "Area2")
+        {
+            area2 = true;
         }
     }
-    void OnTriggerExit(Collider col){
-        if(col.gameObject.name=="Area1"){
+    void OnTriggerExit(Collider col)
+    {
+        if (col.gameObject.name == "Area1")
+        {
             area1 = false;
         }
-        if(col.gameObject.name=="Area2"){
+        if (col.gameObject.name == "Area2")
+        {
             area2 = false;
         }
     }
-    void Update(){
+    void Update()
+    {
         Vector3 dir = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.y - transform.position.y);
-        if(state==4){
+        if (state == 4)
+        {
             transform.rotation = Quaternion.LookRotation(dir);
             rigid.velocity = dir.normalized * 4.0f;
         }

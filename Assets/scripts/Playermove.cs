@@ -26,7 +26,7 @@ public class Playermove : MonoBehaviour
 
     void Update()
     {
-        camera.transform.position = new Vector3(transform.position.x, 12f, transform.position.z - 6f);
+        camera.transform.position = new Vector3(transform.position.x, 12f, transform.position.z - 8f);
         Vector3 mousePos = Input.mousePosition;
         xInput = Input.GetAxisRaw("Horizontal");
         zInput = Input.GetAxisRaw("Vertical");
