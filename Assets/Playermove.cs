@@ -31,7 +31,7 @@ public class Playermove : MonoBehaviour
         zInput = Input.GetAxisRaw("Vertical");
         moveVec = new Vector3(xInput, 0f, zInput);
         pRigid.velocity = moveVec.normalized * pSpeed;
-        Vector3 dir = new Vector3(mousePos.x - 550, 0f, mousePos.y - 235);
+        Vector3 dir = new Vector3(mousePos.x - Screen.width / 2, 0f, mousePos.y - Screen.height / 2);
         transform.rotation = Quaternion.LookRotation(dir);
         slashCurrentTime += Time.deltaTime;
         rollCurrentTime += Time.deltaTime;
