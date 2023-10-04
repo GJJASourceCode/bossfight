@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 690066932189781525, guid: 5e59d0d22834e9948ad55deeef74bb1e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 690066932189781525, guid: 5e59d0d22834e9948ad55deeef74bb1e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3442677677472623860, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3442677677472623860, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
       propertyPath: m_LocalPosition.x
@@ -234,6 +234,26 @@ PrefabInstance:
     - target: {fileID: 3442677677472623860, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442677678062656061, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
+      propertyPath: m_Name
+      value: Head_Collider
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442677678080301958, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
+      propertyPath: m_Name
+      value: Tail_Collider3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442677678438879064, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
+      propertyPath: m_Name
+      value: Tail_Collider1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442677679127310279, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
+      propertyPath: m_Name
+      value: Tail_Collider2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442677679131378147, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
+      propertyPath: m_Name
+      value: Tail_Collider4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20f30779cfae29044ba5c9f93db66e08, type: 3}
