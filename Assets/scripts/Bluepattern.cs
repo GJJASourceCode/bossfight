@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GreenPattern : MonoBehaviour
+public class Bluepattern : MonoBehaviour
 {
     int state;
     Animator anim;
@@ -15,8 +15,11 @@ public class GreenPattern : MonoBehaviour
     void Awake()
     {
         area = new GameObject[2];
-        area[0] = GameObject.Find("Head_collider");
-        area[1] = GameObject.Find("Handcollider");
+        area[0] = GameObject.Find("Chest_collider");
+        area[1] = GameObject.Find("Head_collider");
+        area[2] = GameObject.Find("Tongue01_collider");
+        area[3] = GameObject.Find("Middle01_L_collider");
+        area[4] = GameObject.Find("Middle01_R_collider");
         area[0].SetActive(false);
         area[1].SetActive(false);
         area[2].SetActive(false);
@@ -29,23 +32,33 @@ public class GreenPattern : MonoBehaviour
         area2 = false;
         choosPattern();
     }
-
     IEnumerator attack1()
     {
         anim.SetTrigger("Attack1");
         area[0].SetActive(true);
+        area[1].SetActive(true);
+        area[2].SetActive(true);
         yield return new WaitForSeconds(3f);
         area[0].SetActive(false);
+        area[1].SetActive(false);
+        area[2].SetActive(false);
         yield return new WaitForSeconds(2f);
         choosPattern();
     }
-
     IEnumerator attack2()
     {
         anim.SetTrigger("Attack2");
+        area[0].SetActive(true);
         area[1].SetActive(true);
+        area[2].SetActive(true);
+        area[3].SetActive(true);
+        area[4].SetActive(true);
         yield return new WaitForSeconds(3f);
+        area[0].SetActive(false);
         area[1].SetActive(false);
+        area[2].SetActive(false);
+        area[3].SetActive(false);
+        area[4].SetActive(false);
         yield return new WaitForSeconds(2f);
         choosPattern();
     }
@@ -76,7 +89,7 @@ public class GreenPattern : MonoBehaviour
         {
             case 0:
                 StartCoroutine("attack1");
-                Debug.Log("ì•„");
+                Debug.Log("¾Æ");
                 break;
             case 1:
                 StartCoroutine("attack2");
@@ -124,4 +137,6 @@ public class GreenPattern : MonoBehaviour
             rigid.velocity = dir.normalized * 4.0f;
         }
     }
+
+
 }
