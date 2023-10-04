@@ -14,6 +14,11 @@ public class GreenPattern : MonoBehaviour
 
     void Awake()
     {
+        area = new GameObject[2];
+        area[0] = GameObject.Find("Hand_collider");
+        area[1] = GameObject.Find("Head_collider");
+        area[0].SetActive(false);
+        area[1].SetActive(false);
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         rigid = GetComponent<Rigidbody>();
@@ -25,9 +30,9 @@ public class GreenPattern : MonoBehaviour
     IEnumerator attack1()
     {
         anim.SetTrigger("Attack1");
-        //area[0].SetAcitve(true);
+        area[0].SetActive(true);
         yield return new WaitForSeconds(3f);
-        //area[0].SetAcitve(false);
+        area[0].SetActive(false);
         yield return new WaitForSeconds(2f);
         choosPattern();
     }
@@ -35,9 +40,9 @@ public class GreenPattern : MonoBehaviour
     IEnumerator attack2()
     {
         anim.SetTrigger("Attack2");
-        //area[1].SetAcitve(true);
+        area[1].SetActive(true);
         yield return new WaitForSeconds(3f);
-        //area[1].SetAcitve(false);
+        area[1].SetActive(false);
         yield return new WaitForSeconds(2f);
         choosPattern();
     }
@@ -68,6 +73,7 @@ public class GreenPattern : MonoBehaviour
         {
             case 0:
                 StartCoroutine("attack1");
+                Debug.Log("아");
                 break;
             case 1:
                 StartCoroutine("attack2");
