@@ -53,7 +53,7 @@ public class RedPattern : MonoBehaviour
         choosPattern();
     }
 
-    IEnumerator attack2()
+    IEnumerator attack3()
     {
         anim.SetTrigger("Fireball Shoot");
         area[1].SetActive(true);
