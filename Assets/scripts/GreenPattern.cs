@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GreenPattern : MonoBehaviour
 {
+    public static int monsterHealth;
     int state;
     Animator anim;
     GameObject[] area;
@@ -15,6 +16,7 @@ public class GreenPattern : MonoBehaviour
 
     void Awake()
     {
+        monsterHealth = 1000;
         area = new GameObject[2];
         area[0] = GameObject.Find("Hand_collider");
         area[1] = GameObject.Find("Head_collider");
@@ -156,11 +158,9 @@ public class GreenPattern : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log(area2);
-        Debug.Log(state);
         Vector3 dir = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
         Vector3 zero = new Vector3(0f, 0f, 0f);
-
+        Debug.Log("몬스터 체력 : " + monsterHealth);
         if (run)
         {
             rigid.velocity = currentVec.normalized * 20.0f;
@@ -168,8 +168,13 @@ public class GreenPattern : MonoBehaviour
 
         if (lookAtPlayer)
         {
+            anim.SetInteger("walk", 1);
             rotGoal = Quaternion.LookRotation(dir.normalized);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotGoal, 0.01f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotGoal, 0.005f);
+        }
+        else
+        {
+            anim.SetInteger("walk", 0);
         }
 
         if (state == 4)
@@ -177,7 +182,6 @@ public class GreenPattern : MonoBehaviour
             lookAtPlayer = true;
             if (area2 == true)
             {
-                anim.SetInteger("walk", 0);
                 StopCoroutine("movetime");
                 lookAtPlayer = false;
                 state = 0;

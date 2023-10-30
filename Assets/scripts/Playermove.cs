@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Playermove : MonoBehaviour
 {
-    GameObject camera;
-    int slashNum;
+    GameObject body;
+    public static int slashNum;
     Animator anim;
     float xInput, zInput, pSpeed, slashTime, slashCurrentTime, rollTime, rollCurrentTime;
     Vector3 moveVec, point;
     Vector2 turn;
     Rigidbody pRigid;
-    bool isSlashing, isRoll;
+    public static bool isSlashing, isRoll;
     void Start()
     {
+        body = GameObject.Find("Armature");
         pRigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         pSpeed = 4.0f;
@@ -22,12 +23,6 @@ public class Playermove : MonoBehaviour
         slashTime = 0f;
         rollTime = 1.2f;
         isRoll = false;
-    }
-    IEnumerator rolling()
-    {
-        //transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        yield return new WaitForSeconds(1.15f);
-        //transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
     }
     void Update()
     {
@@ -84,7 +79,6 @@ public class Playermove : MonoBehaviour
         }
         else if (Input.GetKeyDown("left shift") && !isSlashing && !isRoll)
         {
-            StartCoroutine("rolling");
             rollCurrentTime = 0;
             isRoll = true;
             pSpeed = 10f;
