@@ -5,7 +5,8 @@ using UnityEngine;
 public class AttackDetect : MonoBehaviour
 {
     bool isHited;
-    void OnTriggerEnter(Collider col)
+    public AudioSource hit;
+    void OnTriggerStay(Collider col)
     {
         if (Playermove.isSlashing && !isHited)
         {
@@ -15,10 +16,12 @@ public class AttackDetect : MonoBehaviour
                 if (Playermove.slashNum == 1)
                 {
                     GreenPattern.monsterHealth -= 32;
+                    hit.Play();
                 }
                 else if (Playermove.slashNum == 2)
                 {
                     GreenPattern.monsterHealth -= 42;
+                    hit.Play();
                 }
             }
             else if (col.gameObject.tag == "YackDamageBox")
@@ -27,10 +30,12 @@ public class AttackDetect : MonoBehaviour
                 if (Playermove.slashNum == 1)
                 {
                     GreenPattern.monsterHealth -= 48;
+                    hit.Play();
                 }
                 else if (Playermove.slashNum == 2)
                 {
                     GreenPattern.monsterHealth -= 63;
+                    hit.Play();
                 }
             }
 

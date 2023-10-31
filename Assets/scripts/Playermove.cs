@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Playermove : MonoBehaviour
 {
+    public AudioSource slash1, slash2;
     GameObject body;
-    public static int slashNum;
+    public static int slashNum, health;
     Animator anim;
     float xInput, zInput, pSpeed, slashTime, slashCurrentTime, rollTime, rollCurrentTime;
     Vector3 moveVec, point;
     Vector2 turn;
     Rigidbody pRigid;
-    public static bool isSlashing, isRoll;
+    bool canRoll;
+    public static bool isSlashing, isRoll, isHited;
     void Start()
     {
         body = GameObject.Find("Armature");
@@ -21,8 +23,10 @@ public class Playermove : MonoBehaviour
         slashCurrentTime = 0f;
         rollCurrentTime = 0f;
         slashTime = 0f;
-        rollTime = 1.2f;
+        rollTime = 0.9f;
         isRoll = false;
+        canRoll = true;
+        health = 200;
     }
     void Update()
     {
@@ -37,13 +41,14 @@ public class Playermove : MonoBehaviour
         {
             isSlashing = false;
         }
-        if (rollCurrentTime > 0.9f)
+        if (rollCurrentTime > 0.3f)
         {
             pSpeed = 4.0f;
+            isRoll = false;
         }
         if (rollCurrentTime > rollTime)
         {
-            isRoll = false;
+            canRoll = true;
         }
         if (Input.GetKey("w"))
         {
@@ -70,17 +75,20 @@ public class Playermove : MonoBehaviour
             {
                 slashTime = 1.2f / 1.5f;
                 anim.SetTrigger("slashing1");
+                slash1.Play();
             }
             else if (slashNum == 2)
             {
                 slashTime = 1.8f / 1.5f;
                 anim.SetTrigger("slashing2");
+                slash2.Play();
             }
         }
-        else if (Input.GetKeyDown("left shift") && !isSlashing && !isRoll)
+        else if (Input.GetKeyDown("left shift") && !isSlashing && canRoll)
         {
             rollCurrentTime = 0;
             isRoll = true;
+            canRoll = false;
             pSpeed = 10f;
             anim.SetTrigger("roll");
         }

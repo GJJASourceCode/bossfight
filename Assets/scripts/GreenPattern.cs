@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class GreenPattern : MonoBehaviour
 {
+    public AudioSource attack1Sound, attack2Sound, jumpAttackSound1, jumpAttackSound2, howlingSound, dashSound;
+    public static bool isAttacking;
     public static int monsterHealth;
-    int state;
+    public static int state;
     Animator anim;
     GameObject[] area;
     GameObject player;
@@ -16,12 +18,17 @@ public class GreenPattern : MonoBehaviour
 
     void Awake()
     {
+        isAttacking = false;
         monsterHealth = 1000;
-        area = new GameObject[2];
+        area = new GameObject[4];
         area[0] = GameObject.Find("Hand_collider");
         area[1] = GameObject.Find("Head_collider");
+        area[2] = GameObject.Find("jumpRange");
+        area[3] = GameObject.Find("chargeRange");
         area[0].SetActive(false);
         area[1].SetActive(false);
+        area[2].SetActive(false);
+        area[3].SetActive(false);
         anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         rigid = GetComponent<Rigidbody>();
@@ -35,22 +42,25 @@ public class GreenPattern : MonoBehaviour
 
     IEnumerator state_0()
     {
+        float time;
+        yield return new WaitForSeconds(0.2f);
         lookAtPlayer = true;
-        yield return new WaitForSeconds(1f);
+        time = Random.Range(0f, 0.8f);
+        yield return new WaitForSeconds(time);
         if (area1)
         {
             if (area2)
             {
-                state = Random.Range(1, 3);
+                state = Random.Range(1, 4);
             }
             else
             {
-                state = 4;
+                state = 5;
             }
         }
         else
         {
-            state = 3;
+            state = 4;
         }
         lookAtPlayer = false;
         choosePattern();
@@ -58,9 +68,15 @@ public class GreenPattern : MonoBehaviour
     IEnumerator attack1()
     {
         anim.SetTrigger("Attack1");
+        yield return new WaitForSeconds(0.7f);
+        attack1Sound.Play();
+        yield return new WaitForSeconds(0.1f);
         area[0].SetActive(true);
-        yield return new WaitForSeconds(1.5f);
+        isAttacking = true;
+        yield return new WaitForSeconds(0.2f);
         area[0].SetActive(false);
+        isAttacking = false;
+        yield return new WaitForSeconds(0.5f);
         state = 0;
         choosePattern();
     }
@@ -68,17 +84,26 @@ public class GreenPattern : MonoBehaviour
     IEnumerator attack2()
     {
         anim.SetTrigger("Attack2");
+        attack2Sound.Play();
+        yield return new WaitForSeconds(0.8f);
         area[1].SetActive(true);
-        yield return new WaitForSeconds(3f);
+        isAttacking = true;
+        yield return new WaitForSeconds(0.1f);
         area[1].SetActive(false);
+        isAttacking = false;
+        yield return new WaitForSeconds(1.4f);
         state = 0;
         choosePattern();
     }
     IEnumerator charge()
     {
         anim.SetTrigger("scream");
+        howlingSound.Play();
         yield return new WaitForSeconds(1.4f);
         anim.SetInteger("run", 1);
+        dashSound.Play();
+        area[3].SetActive(true);
+        isAttacking = true;
         run = true;
         lookAtPlayer = true;
         currentVec = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
@@ -90,14 +115,29 @@ public class GreenPattern : MonoBehaviour
         currentVec = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
         yield return new WaitForSeconds(0.25f);
         currentVec = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
-        yield return new WaitForSeconds(0.25f);
-        currentVec = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
-        yield return new WaitForSeconds(0.25f);
-        currentVec = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
         lookAtPlayer = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
+        area[3].SetActive(false);
+        isAttacking = false;
         anim.SetInteger("run", 0);
         run = false;
+        yield return new WaitForSeconds(0.5f);
+        state = 0;
+        choosePattern();
+    }
+    IEnumerator jumpAttack()
+    {
+
+        anim.SetTrigger("jumpAttack");
+        yield return new WaitForSeconds(0.4f);
+        jumpAttackSound1.Play();
+        yield return new WaitForSeconds(1.2f);
+        isAttacking = true;
+        area[2].SetActive(true);
+        jumpAttackSound2.Play();
+        yield return new WaitForSeconds(0.1f);
+        area[2].SetActive(false);
+        isAttacking = false;
         state = 0;
         choosePattern();
     }
@@ -110,6 +150,7 @@ public class GreenPattern : MonoBehaviour
     void choosePattern()
     {
         Debug.Log("츄즈패턴");
+        Debug.Log(state);
         switch (state)
         {
             case 0:
@@ -122,27 +163,30 @@ public class GreenPattern : MonoBehaviour
                 StartCoroutine("attack2");//attack2 꺠물기 
                 break;
             case 3:
-                StartCoroutine("charge");//charge 돌진 공격
+                StartCoroutine("jumpAttack");//점프
                 break;
             case 4:
-                StartCoroutine("movetime");
-                anim.SetInteger("walk", 1);
+                StartCoroutine("charge");//charge 돌진 공격   
                 break;
             case 5:
+                StartCoroutine("movetime");
+                anim.SetInteger("walk", 1);
                 break;
             default:
                 break;
         }
     }
-    void OnTriggerEnter(Collider col)
+    void OnTriggerStay(Collider col)
     {
         if (col.gameObject.name == "Area1")//바깥원
         {
             area1 = true;
+            Debug.Log("접근1");
         }
         if (col.gameObject.name == "Area2")//안쪽원
         {
             area2 = true;
+            Debug.Log("접근2");
         }
     }
     void OnTriggerExit(Collider col)
@@ -160,7 +204,6 @@ public class GreenPattern : MonoBehaviour
     {
         Vector3 dir = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
         Vector3 zero = new Vector3(0f, 0f, 0f);
-        Debug.Log("몬스터 체력 : " + monsterHealth);
         if (run)
         {
             rigid.velocity = currentVec.normalized * 20.0f;
@@ -170,14 +213,14 @@ public class GreenPattern : MonoBehaviour
         {
             anim.SetInteger("walk", 1);
             rotGoal = Quaternion.LookRotation(dir.normalized);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotGoal, 0.005f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotGoal, 0.008f);
         }
         else
         {
             anim.SetInteger("walk", 0);
         }
 
-        if (state == 4)
+        if (state == 5)
         {
             lookAtPlayer = true;
             if (area2 == true)
@@ -190,7 +233,7 @@ public class GreenPattern : MonoBehaviour
             rigid.velocity = dir.normalized * 4.0f;
 
         }
-        else if (state != 3)
+        if (state == 0 || state == 1 || state == 2 || state == 3)
         {
             rigid.velocity = zero * 4.0f;
         }

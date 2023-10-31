@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DamageBox
   - YackDamageBox
+  - AttackRange
   layers:
   - Default
   - TransparentFX
