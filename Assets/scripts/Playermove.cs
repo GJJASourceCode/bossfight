@@ -4,75 +4,91 @@ using UnityEngine;
 
 public class Playermove : MonoBehaviour
 {
-    GameObject camera;
-    int slashNum;
+    public AudioSource slash1, slash2;
+    GameObject body;
+    public static int slashNum, health;
     Animator anim;
     float xInput, zInput, pSpeed, slashTime, slashCurrentTime, rollTime, rollCurrentTime;
     Vector3 moveVec, point;
+    Vector2 turn;
     Rigidbody pRigid;
-    bool isSlashing, isRoll;
+    bool canRoll;
+    public static bool isSlashing, isRoll, isHited;
     void Start()
     {
-        camera = GameObject.FindGameObjectWithTag("MainCamera");
+        body = GameObject.Find("Armature");
         pRigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         pSpeed = 4.0f;
         slashCurrentTime = 0f;
         rollCurrentTime = 0f;
         slashTime = 0f;
-        rollTime = 1.2f;
+        rollTime = 0.9f;
         isRoll = false;
+        canRoll = true;
+        health = 200;
     }
-
     void Update()
     {
-        camera.transform.position = new Vector3(transform.position.x, 12f, transform.position.z - 8f);
-        Vector3 mousePos = Input.mousePosition;
+        turn.x += Input.GetAxis("Mouse X");
+        transform.localRotation = Quaternion.Euler(0, turn.x, 0);
         xInput = Input.GetAxisRaw("Horizontal");
         zInput = Input.GetAxisRaw("Vertical");
         moveVec = new Vector3(xInput, 0f, zInput);
-        pRigid.velocity = moveVec.normalized * pSpeed;
-        Vector3 dir = new Vector3(mousePos.x - Screen.width / 2, 0f, mousePos.y - Screen.height / 2);
-        transform.rotation = Quaternion.LookRotation(dir);
         slashCurrentTime += Time.deltaTime;
         rollCurrentTime += Time.deltaTime;
         if (slashCurrentTime > slashTime)
         {
             isSlashing = false;
         }
-        if (rollCurrentTime > 0.9f)
+        if (rollCurrentTime > 0.3f)
         {
             pSpeed = 4.0f;
+            isRoll = false;
         }
         if (rollCurrentTime > rollTime)
         {
-            isRoll = false;
+            canRoll = true;
+        }
+        if (Input.GetKey("w"))
+        {
+            pRigid.velocity = transform.forward * pSpeed;
+        }
+        if (Input.GetKey("s"))
+        {
+            pRigid.velocity = -transform.forward * pSpeed;
+        }
+        if (Input.GetKey("d"))
+        {
+            pRigid.velocity = transform.right * pSpeed;
+        }
+        if (Input.GetKey("a"))
+        {
+            pRigid.velocity = -transform.right * pSpeed;
         }
         if (Input.GetMouseButton(0) && !isSlashing && !isRoll)
         {
             slashCurrentTime = 0;
             isSlashing = true;
-            slashNum = Random.Range(1, 4);
+            slashNum = Random.Range(1, 3);
             if (slashNum == 1)
             {
-                slashTime = 1.2f;
+                slashTime = 1.2f / 1.5f;
                 anim.SetTrigger("slashing1");
+                slash1.Play();
             }
             else if (slashNum == 2)
             {
-                slashTime = 1.8f;
+                slashTime = 1.8f / 1.5f;
                 anim.SetTrigger("slashing2");
-            }
-            else if (slashNum == 3)
-            {
-                slashTime = 1.82f;
-                anim.SetTrigger("slashing3");
+                slash2.Play();
             }
         }
-        else if (Input.GetKeyDown("left shift") && !isSlashing && !isRoll)
+        else if (Input.GetKeyDown("left shift") && !isSlashing && canRoll)
         {
             rollCurrentTime = 0;
             isRoll = true;
+            canRoll = false;
             pSpeed = 10f;
             anim.SetTrigger("roll");
         }
