@@ -375,6 +375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8132414171679817042}
+  - component: {fileID: 1451119623334472778}
   m_Layer: 0
   m_Name: Knee_R
   m_TagString: Untagged
@@ -398,6 +399,19 @@ Transform:
   m_Father: {fileID: 8132414171473367553}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1451119623334472778
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132414171679817053}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.08, y: 0.1, z: 0.1}
+  m_Center: {x: -0.47, y: 0, z: 0}
 --- !u!1 &8132414171682423144
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +850,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8132414171862916329}
+  - component: {fileID: 6469231318194156119}
   m_Layer: 0
   m_Name: Knee_L
   m_TagString: Untagged
@@ -859,6 +874,19 @@ Transform:
   m_Father: {fileID: 8132414172522103092}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6469231318194156119
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132414171862916328}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.08, y: 0.1, z: 0.1}
+  m_Center: {x: 0.46, y: 0, z: 0}
 --- !u!1 &8132414171876003872
 GameObject:
   m_ObjectHideFlags: 0
@@ -3764,6 +3792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8132414172807810338}
+  - component: {fileID: 2898418500554764855}
   m_Layer: 0
   m_Name: Chest_M
   m_TagString: Untagged
@@ -3789,6 +3818,19 @@ Transform:
   m_Father: {fileID: 8132414173148227953}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2898418500554764855
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8132414172807810349}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.34, y: 0.09, z: 0.28207496}
+  m_Center: {x: 0.0710849, y: -0.029466076, z: -0.008962512}
 --- !u!1 &8132414172812944385
 GameObject:
   m_ObjectHideFlags: 0
@@ -4178,6 +4220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7977bb4777bc31d43b2d92102dad8e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slash1: {fileID: 0}
+  slash2: {fileID: 0}
 --- !u!1 &8132414173056734260
 GameObject:
   m_ObjectHideFlags: 0
