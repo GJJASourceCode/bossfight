@@ -21,10 +21,10 @@ public class GreenPattern : MonoBehaviour
         isAttacking = false;
         monsterHealth = 1000;
         area = new GameObject[4];
-        area[0] = GameObject.Find("Hand_collider");
-        area[1] = GameObject.Find("Head_collider");
-        area[2] = GameObject.Find("jumpRange");
-        area[3] = GameObject.Find("chargeRange");
+        area[0] = GameObject.Find("Hand_collider");//손 공격범위
+        area[1] = GameObject.Find("Head_collider");//머리 공격범위
+        area[2] = GameObject.Find("jumpRange");//점프 공격범위
+        area[3] = GameObject.Find("chargeRange");//돌진 공격범위
         area[0].SetActive(false);
         area[1].SetActive(false);
         area[2].SetActive(false);
@@ -154,7 +154,7 @@ public class GreenPattern : MonoBehaviour
         switch (state)
         {
             case 0:
-                StartCoroutine("state_0");
+                StartCoroutine("state_0");//일시정지
                 break;
             case 1:
                 StartCoroutine("attack1");//attack1 손으로 공격
@@ -199,6 +199,9 @@ public class GreenPattern : MonoBehaviour
         {
             area2 = false;
         }
+    }
+    void die(){
+        
     }
     void Update()
     {

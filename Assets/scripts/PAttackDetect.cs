@@ -11,7 +11,7 @@ public class PAttackDetect : MonoBehaviour
     {
         if (col.gameObject.tag == "AttackRange")
         {
-            if (GreenPattern.isAttacking && !Playermove.isRoll)
+            if (GreenPattern.isAttacking && !Playermove.isRoll && !Playermove.isDeath)
             {
                 switch (GreenPattern.state)
                 {

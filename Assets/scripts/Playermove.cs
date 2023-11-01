@@ -13,7 +13,7 @@ public class Playermove : MonoBehaviour
     Vector2 turn;
     Rigidbody pRigid;
     bool canRoll;
-    public static bool isSlashing, isRoll, isHited;
+    public static bool isSlashing, isRoll, isHited, isDeath;
     void Start()
     {
         body = GameObject.Find("Armature");
@@ -30,6 +30,11 @@ public class Playermove : MonoBehaviour
     }
     void Update()
     {
+        if(health<=0&&!isDeath){
+            anim.SetTrigger("death");
+            isDeath = true;
+            health=0;
+        }
         turn.x += Input.GetAxis("Mouse X");
         transform.localRotation = Quaternion.Euler(0, turn.x, 0);
         xInput = Input.GetAxisRaw("Horizontal");
@@ -50,7 +55,8 @@ public class Playermove : MonoBehaviour
         {
             canRoll = true;
         }
-        if (Input.GetKey("w"))
+        if(!isDeath){
+            if (Input.GetKey("w"))
         {
             pRigid.velocity = transform.forward * pSpeed;
         }
@@ -66,7 +72,8 @@ public class Playermove : MonoBehaviour
         {
             pRigid.velocity = -transform.right * pSpeed;
         }
-        if (Input.GetMouseButton(0) && !isSlashing && !isRoll)
+        }
+        if (Input.GetMouseButton(0) && !isSlashing && !isRoll && !isDeath)
         {
             slashCurrentTime = 0;
             isSlashing = true;
@@ -84,7 +91,7 @@ public class Playermove : MonoBehaviour
                 slash2.Play();
             }
         }
-        else if (Input.GetKeyDown("left shift") && !isSlashing && canRoll)
+        else if (Input.GetKeyDown("left shift") && !isSlashing && canRoll && !isDeath)
         {
             rollCurrentTime = 0;
             isRoll = true;
@@ -94,11 +101,15 @@ public class Playermove : MonoBehaviour
         }
         if (Mathf.Abs(xInput) > Mathf.Epsilon || Mathf.Abs(zInput) > Mathf.Epsilon)
         {
-            anim.SetInteger("animState", 1);
+            if(!isDeath){
+                anim.SetInteger("animState", 1);
+            }
         }
         else
         {
-            anim.SetInteger("animState", 0);
+            if(!isDeath){
+                anim.SetInteger("animState", 0);
+            }
         }
     }
 }
