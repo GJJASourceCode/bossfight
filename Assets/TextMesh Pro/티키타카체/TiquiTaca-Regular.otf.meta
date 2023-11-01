@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: dbf44c4779876e44aabd8cca8d2f0729
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Tiqui Taca
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0540b4994adb580408ae6e7278501f50, type: 3}
+  - {fileID: 12800000, guid: db321f5e53d3c54489e60f85d3ccdd3d, type: 3}
+  - {fileID: 12800000, guid: e40ed78c62d21fd4cb6b87ed35f85239, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
