@@ -5,12 +5,12 @@ using UnityEngine;
 public class GreenPattern : MonoBehaviour
 {
     public AudioSource attack1Sound, attack2Sound, jumpAttackSound1, jumpAttackSound2, howlingSound, dashSound;
-    public static bool isAttacking;
+    public static bool isAttacking, isDeath;
     public static int monsterHealth;
     public static int state;
     Animator anim;
     GameObject[] area;
-    GameObject player;
+    public GameObject player, victory;
     Rigidbody rigid;
     Vector3 currentVec;
     bool area1, area2, lookAtPlayer, run;
@@ -116,7 +116,7 @@ public class GreenPattern : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         currentVec = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
         lookAtPlayer = false;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.75f);
         area[3].SetActive(false);
         isAttacking = false;
         anim.SetInteger("run", 0);
@@ -151,7 +151,8 @@ public class GreenPattern : MonoBehaviour
     {
         Debug.Log("츄즈패턴");
         Debug.Log(state);
-        switch (state)
+        if(!isDeath){
+            switch (state)
         {
             case 0:
                 StartCoroutine("state_0");//일시정지
@@ -174,6 +175,7 @@ public class GreenPattern : MonoBehaviour
                 break;
             default:
                 break;
+        }
         }
     }
     void OnTriggerStay(Collider col)
@@ -200,11 +202,24 @@ public class GreenPattern : MonoBehaviour
             area2 = false;
         }
     }
-    void die(){
-        
+    IEnumerator Diiie(){
+        yield return new WaitForSeconds(3f);
+        victory.SetActive(true);
+
     }
     void Update()
     {
+        if(monsterHealth<=0&&!isDeath){
+            isDeath = true;
+            state = 6;
+            monsterHealth = 0;
+            anim.SetTrigger("death");
+            anim.SetInteger("dying",1);
+            StartCoroutine("Diiie");
+        }
+        if(isDeath){
+            monsterHealth = 0;
+        }
         Vector3 dir = new Vector3(player.transform.position.x - transform.position.x, 0f, player.transform.position.z - transform.position.z);
         Vector3 zero = new Vector3(0f, 0f, 0f);
         if (run)
@@ -216,7 +231,7 @@ public class GreenPattern : MonoBehaviour
         {
             anim.SetInteger("walk", 1);
             rotGoal = Quaternion.LookRotation(dir.normalized);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotGoal, 0.008f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotGoal, 0.02f);
         }
         else
         {
@@ -236,7 +251,7 @@ public class GreenPattern : MonoBehaviour
             rigid.velocity = dir.normalized * 4.0f;
 
         }
-        if (state == 0 || state == 1 || state == 2 || state == 3)
+        if (state == 0 || state == 1 || state == 2 || state == 3 || state == 6)
         {
             rigid.velocity = zero * 4.0f;
         }

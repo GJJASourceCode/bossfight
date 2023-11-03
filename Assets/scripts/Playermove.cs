@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class Playermove : MonoBehaviour
 {
-    public AudioSource slash1, slash2;
+    float bbCurrentTime, bbTime;
+    public AudioSource slash1, slash2, bossBattleBGM, defeatBGM, victoryBGM;
     GameObject body;
+    public GameObject deathtext;
     public static int slashNum, health;
     Animator anim;
     float xInput, zInput, pSpeed, slashTime, slashCurrentTime, rollTime, rollCurrentTime;
     Vector3 moveVec, point;
     Vector2 turn;
     Rigidbody pRigid;
-    bool canRoll;
+    bool canRoll, isEnd, rollEnd;
     public static bool isSlashing, isRoll, isHited, isDeath;
     void Start()
     {
+        isEnd = false;
+        bossBattleBGM.Play();
+        bbTime = 130f;
         body = GameObject.Find("Armature");
         pRigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -30,10 +35,28 @@ public class Playermove : MonoBehaviour
     }
     void Update()
     {
+        bbCurrentTime += Time.deltaTime;
+        if(bbCurrentTime>bbTime){
+            bbCurrentTime =0f;
+            bossBattleBGM.Play();
+        }
+        if(isDeath&&!isEnd){
+            isEnd = true;
+            bossBattleBGM.Stop();
+            defeatBGM.Play();
+        }
+        if(GreenPattern.isDeath&&!isEnd){
+            isEnd = true;
+            bossBattleBGM.Stop();
+            Debug.Log("승리");
+            victoryBGM.Play();
+        }
         if(health<=0&&!isDeath){
             anim.SetTrigger("death");
             isDeath = true;
             health=0;
+            anim.SetInteger("dying", 1);
+            deathtext.SetActive(true);
         }
         turn.x += Input.GetAxis("Mouse X");
         transform.localRotation = Quaternion.Euler(0, turn.x, 0);
@@ -50,6 +73,10 @@ public class Playermove : MonoBehaviour
         {
             pSpeed = 4.0f;
             isRoll = false;
+        }
+        if (rollCurrentTime > 0.7f)
+        {
+            rollEnd = true;
         }
         if (rollCurrentTime > rollTime)
         {
@@ -73,7 +100,7 @@ public class Playermove : MonoBehaviour
             pRigid.velocity = -transform.right * pSpeed;
         }
         }
-        if (Input.GetMouseButton(0) && !isSlashing && !isRoll && !isDeath)
+        if (Input.GetMouseButton(0) && !isSlashing && rollEnd && !isDeath)
         {
             slashCurrentTime = 0;
             isSlashing = true;
@@ -95,6 +122,7 @@ public class Playermove : MonoBehaviour
         {
             rollCurrentTime = 0;
             isRoll = true;
+            rollEnd = false;
             canRoll = false;
             pSpeed = 10f;
             anim.SetTrigger("roll");
